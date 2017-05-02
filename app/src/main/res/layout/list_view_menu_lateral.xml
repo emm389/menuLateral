@@ -2,3 +2,6 @@
 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/listaMenu"
     style="@style/MenuLateralStyle" />
+
+<!-- El estilo MenuLateralStyle lo encontramos en el archivo styles.xml en la carpeta
+ values, ese es solo copiarlo y pegarlo en su archivo styles -->

@@ -24,12 +24,20 @@ import java.util.List;
 /**
  * Created by Emmanuel.
  */
-
+/*
+    Este adaptador solo lo copian a su carpeta adapter y copian los archivos item_profile,
+    item_menu e item_menu_logout en la carpeta layout
+ */
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
     private Context mContext;
     private List<MenuPOJO> lista;
     private LayoutInflater mInflater;
+
+    /*
+        Estas constantes son los tipos de vistas que tenemos, en la clase MenuLateral
+        se explico brevemente para que servian
+     */
     private static final int ITEM_TYPE_PROFILE = 0;
     private static final int ITEM_TYPE_MENU = 1;
     private static final int ITEM_TYPE_LOGOUT = 2;
@@ -43,6 +51,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     @Override
     public MenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = null;
+        // Mediante un switch obtenemos el tipo de vista que se debe inflar segun el tipo
+        // que seteamos en nuestros objetos MenuPOJO
         switch (viewType) {
             case ITEM_TYPE_PROFILE:
                 item = mInflater.inflate(R.layout.item_profile, parent, false);
@@ -59,11 +69,24 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     @Override
     public void onBindViewHolder(final MenuViewHolder holder, int position) {
+        /*
+            Esta validacion de la posicion es por lo de los tipos de vista que se han inflado,
+            En la posicion 0 tenemos los datos del usuario (foto y nombre) y por lo tanto tiene una
+            estructura distinta al resto del menu, en las demas posiciones tenemos las opciones del
+            menu, que basicamente tienen la misma estructura
+            NOTA: sin esta validacion nuestra aplicacion se cerraria inesperadamente debido a las distintas
+            estructuras entre la vista de los datos del usuario y los botones del menu, nos daria un
+            NullPointerException porque en la posicion 0 estan foto y nombre, pero en la posicion 1 en adelante
+            ya no se encuentran esos elementos, sino icono y nombre del boton
+         */
         if (position != 0) {
             holder.icono.setImageDrawable(ContextCompat.getDrawable(mContext, lista.get(position).getIcono()));
             holder.nombre.setText(lista.get(position).getNombre());
         } else {
+            // Esta validacion es para poner una imagen por default si no hay ninguna foto en el servidor
             if (!lista.get(position).getFoto().equals("")) {
+                // Esta estructura de Glide es para mostrar un progressBar mientras la imagen
+                // es descargada de internet
                 Glide.with(mContext).load(lista.get(position).getFoto()).crossFade().listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -85,6 +108,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         }
     }
 
+    // Este metodo es importante para saber que tipo de vista inflar,
+    // vemos que obtenemos el tipo del array de objetos echo en la clase MenuLateral
+    // donde se hizo la observacion del tipo
     @Override
     public int getItemViewType(int position) {
         switch (lista.get(position).getTipo()){
@@ -104,6 +130,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         return lista.size();
     }
 
+    // Esta clase es para declarar y obtener las referencias de los 3 xml (item_profile, item_menu
+    // e item_menu_logout) para su posterior uso
+    // NOTA: Todos los recyclerview y listview usan una clase Holder para esto, pero solo en el
+    // recyclerview se extiende de RecylerView.ViewHolder
     class MenuViewHolder extends RecyclerView.ViewHolder{
         ImageView icono;
         ImageView fotoPerfil;
@@ -121,6 +151,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         }
     }
 
+    // Esta implementacion es para darle el evento de clickListener al recyclerview, ya que
+    // nativamente no lo tiene, este bloque lo pueden reutilizar en todos sus proyectos donde
+    // lo necesiten
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
@@ -169,4 +202,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
         void onLongClick(View view, int position);
     }
+
+    //************** FIN IMPLEMENTACION DE EVENTO CLICKLISTENER EN RECYCLERVIEW **************
 }

@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 public class MenuLateral extends AppCompatActivity {
 
-    // nuestro FrameLayout lo pusimos protected para poder accesar a ella
+    // nuestro FrameLayout y otras variables las pusimos protected para poder accesar a ellas
     // desde las clases donde hayamos extendido sin necesidad de hacer varias
-    // instancias de nuestro FrameLayout
+    // instancias de nuestras variables y usarlas cuando sea necesario
     protected FrameLayout frame;
     private RecyclerView mDrawerList;
     private DrawerLayout drawer;
