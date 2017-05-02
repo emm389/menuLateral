@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <include
+        layout="@layout/app_bar_menu_lateral"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- En vez de un NavigationView ponemos un include donde tendremos un archivo llamado
+         list_view_menu_lateral.xml con un RecyclerListView y borramos el archivo llamado
+         content_main y dejamos el llamado app_bar_main en la carpeta layout
+    -->
+    <include
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        layout="@layout/list_view_menu_lateral" />
+
+</android.support.v4.widget.DrawerLayout>
